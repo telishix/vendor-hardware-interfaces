@@ -98,9 +98,11 @@ struct Sensors : public ISensorsInterface, public ISensorsEventCallback {
     }
 
     Return<Result> setOperationMode(OperationMode mode) override {
+#ifndef DISABLE_STATIC_SENSOR_LIST
         for (auto sensor : mSensors) {
             sensor.second->setOperationMode(mode);
         }
+#endif
         return Result::OK;
     }
 
