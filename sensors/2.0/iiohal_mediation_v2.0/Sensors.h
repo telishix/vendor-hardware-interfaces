@@ -98,9 +98,14 @@ struct Sensors : public ISensorsInterface, public ISensorsEventCallback {
     }
 
     Return<Result> setOperationMode(OperationMode mode) override {
+#ifndef DISABLE_STATIC_SENSOR_LIST
+	    if(mode == OperationMode::DATA_INJECTION && !(mSensors.size() > 0)) {
+		    return Result::BAD_VALUE;
+            }
         for (auto sensor : mSensors) {
             sensor.second->setOperationMode(mode);
         }
+#endif
         return Result::OK;
     }
 
